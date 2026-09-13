@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ 'Create account' if mode == 'register' else 'Log in' }} | FreePufferFish</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:
+        linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)),
+        url("/static/background.jpg");
+    background-size:cover;
+    background-position:center;
+}
+
+/* NAVBAR */
+
+header{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    padding:25px 50px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    color:white;
+    font-size:24px;
+    font-weight:700;
+}
+
+/* LOGIN BOX */
+
+.container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+.login-box{
+    position:relative;
+    width:340px;
+    padding:40px 30px;
+
+    background:rgba(255,255,255,0.18);
+
+    border:1px solid rgba(255,255,255,0.3);
+
+    backdrop-filter:blur(15px);
+
+    border-radius:20px;
+
+    box-shadow:
+        0 8px 32px rgba(0,0,0,0.3);
+}
+
+h2{
+    text-align:center;
+    color:#1a3040;
+    margin-bottom:30px;
+}
+
+.message{
+    background:#ffe0da;
+    color:#762b22;
+    padding:10px;
+    border-radius:5px;
+    font-size:13px;
+    margin-bottom:18px;
+}
+
+.input-box{
+    margin-bottom:20px;
+}
+
+.input-box label{
+    display:block;
+    font-size:15px;
+    color:#ffffff;
+    margin-bottom:5px;
+}
+
+.input-box input{
+    width:100%;
+    border:none;
+    border-bottom:1px solid #243c4c;
+    background:transparent;
+    padding:8px 0;
+    outline:none;
+}
+
+button.login{
+    width:100%;
+    padding:10px;
+
+    border:none;
+    border-radius:5px;
+
+    background:#183040;
+    color:white;
+
+    cursor:pointer;
+}
+
+.register{
+    text-align:center;
+    margin-top:15px;
+    font-size:12px;
+}
+
+.register a{
+    color:#243c4c;
+    text-decoration:none;
+}
+
+</style>
+</head>
+<body>
+
+<header>
+    <div class="logo">FreePufferFish</div>
+</header>
+
+<div class="container">
+
+    <div class="login-box">
+
+        <h2>{{ 'Create account' if mode == 'register' else 'Welcome back' }}</h2>
+
+        {% if error %}
+            <div class="message">{{ error }}</div>
+        {% endif %}
+
+        <form action="{{ url_for('register' if mode == 'register' else 'login') }}" method="POST">
+
+            <div class="input-box">
+                <label>{{ 'Username' if mode == 'register' else 'Username or email' }}</label>
+                <input type="text" name="{{ 'username' if mode == 'register' else 'identifier' }}" required autocomplete="username">
+            </div>
+
+            {% if mode == 'register' %}
+            <div class="input-box">
+                <label>Email</label>
+                <input type="email" name="email" required autocomplete="email">
+            </div>
+            {% endif %}
+
+            <div class="input-box">
+                <label>Password</label>
+                <input type="password" name="password" required minlength="8" autocomplete="{{ 'new-password' if mode == 'register' else 'current-password' }}">
+            </div>
+
+            {% if mode == 'register' %}
+            <div class="input-box">
+                <label>Confirm password</label>
+                <input type="password" name="confirm_password" required minlength="8" autocomplete="new-password">
+            </div>
+            {% endif %}
+
+            <button type="submit" class="login">{{ 'Register' if mode == 'register' else 'Login' }}</button>
+
+            <div class="register">
+                {% if mode == 'register' %}
+                    Already have an account? <a href="{{ url_for('home') }}">Log in</a>
+                {% else %}
+                    Don't have an account? <a href="{{ url_for('register') }}">Register</a>
+                {% endif %}
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>
